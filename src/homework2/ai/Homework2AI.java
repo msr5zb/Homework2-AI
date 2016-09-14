@@ -51,8 +51,8 @@ public class Homework2AI extends Application {
         rooms[3][1].makeDirty();
         rooms[3][3].makeDirty();
         
-        //Place Initial Vacuum
-        rooms[2][1].placeVacuum();
+        //Set Initial Vacuum
+        rooms[2][1].setVacuum();
         
         //Display Array of Objects to Screen
         
@@ -70,11 +70,54 @@ public class Homework2AI extends Application {
         //Update State Display
         StateSpace currentStateSpace = new StateSpace(rooms);
         
+        //The IDS Stuffs
+        Button IDSButton = new Button("IDS");
+        IDSButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Running the IDS Algorithm");
+                AlgorithmIDS searchIDS = new AlgorithmIDS();
+                StateSpace newStateSpace = searchIDS.doStuff(currentStateSpace);
+                newStateSpace.updateStateSpaceDisplay(grid);
+            }  
+        });
+        GridPane.setConstraints(IDSButton, rows+1, 2);
+        grid.getChildren().add(IDSButton);
+        
+        
+        //The DFGS Stuffs
+        Button DFGSButton = new Button("DFGS");
+        DFGSButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Running the DFGS Algorithm");
+                AlgorithmDFGS searchDFGS = new AlgorithmDFGS();
+                StateSpace newStateSpace = searchDFGS.doStuff(currentStateSpace);
+                newStateSpace.updateStateSpaceDisplay(grid);
+            }  
+        });
+        GridPane.setConstraints(DFGSButton, rows+2, 2);
+        grid.getChildren().add(DFGSButton);        
+        
+        //The A* Stuffs
+        Button aStarButton = new Button("A*");
+          aStarButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Running the A* Algorithm");
+                AlgorithmAStar searchAStar = new AlgorithmAStar();
+                StateSpace newStateSpace = searchAStar.doStuff(currentStateSpace);
+                newStateSpace.updateStateSpaceDisplay(grid);
+            }  
+        });
+        GridPane.setConstraints(aStarButton, rows+3, 2);
+        grid.getChildren().add(aStarButton);    
+        
         //Display
-        currentStateSpace.printStateSpace(grid);
+        currentStateSpace.updateStateSpaceDisplay(grid);
         
         
-        Scene scene = new Scene(grid, 500,300);
+        Scene scene = new Scene(grid, 800,400);
          
         //Display Window
         window.setScene(scene);

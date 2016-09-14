@@ -14,24 +14,32 @@ public class Room {
     private int positionRow;
     private int positionColumn;
     private boolean hasVacuum = false;
-    private boolean isCleaned = true;
-    
-    
-    //Coordinates of the Room to the Up Direction
-    
+    private boolean dirty = false;
+    private boolean visited = false;
+   
     //Constructor, Creates Room Object placing it's Coords
     public Room(int row, int column){
         this.positionRow = row;
         this.positionColumn = column;
     } 
     
-    //Returns if Room is Cleaned or not.
-    public boolean getCleaned(){
-        return isCleaned;
+    //Returns whether the Room was already Visited or not.
+    public boolean isVisited(){
+        return visited;
     }
     
-    //Returns if Room has Vacuum or not.
-    public boolean getVacuum(){
+    //Sets the Room to being Visited
+    public void setVisited(){
+        this.visited = true;
+    }
+
+    //Returns whether the Room is Cleaned or not.
+    public boolean isDirty(){
+        return dirty;
+    }
+    
+    //Returns whether the Room contains the Vacuum or not.
+    public boolean containsVacuum(){
         return hasVacuum;
     }
     
@@ -44,19 +52,24 @@ public class Room {
     public int getColumn(){
         return this.positionColumn;
     }
-    //Place the Vacuum Into Room
-    public void placeVacuum(){
+    //Places the Vacuum Into Room
+    public void setVacuum(){
         this.hasVacuum = true;
+    }
+    
+    //Removes Vacuum from the Room
+    public void removeVacuum(){
+        this.hasVacuum = false;
     }
     
     //Makes the Room Dirty.
     public void makeDirty(){
-        this.isCleaned = false;
+        this.dirty = true;
     }
     
     //Makes the Room Clean.
     public void cleanRoom(){
-        this.isCleaned = true;
+        this.dirty = false;
     }
     
     
