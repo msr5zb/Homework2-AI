@@ -22,7 +22,24 @@ public class StateSpace {
     private Room[][] rooms;
     private Room currentRoom;
     List<String> actionList = new ArrayList<String>();
-
+    private int score;
+    
+    //Calculates and Returns the Score
+    private int getScore(){
+        this.score = 0;
+        for (int i = 0; i < actionList.size(); i++) {
+            switch(actionList.get(i)){
+                case "suck" : this.score+=0;break;
+                case "up" : this.score+=1.3;break;
+                case "down" : this.score+=1.3;break;
+                case "left" : this.score+=1;break;
+                case "right" : this.score+=1;break;
+            }
+                    
+        }
+        return this.score;
+    }
+    
     public boolean cleanCurrentRoom(){
         if(this.currentRoom.isDirty()){
             this.currentRoom.cleanRoom();
