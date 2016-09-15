@@ -67,6 +67,7 @@ public class StateSpace {
         StateSpace newStateSpace = this;
         newStateSpace.setParentStateSpace(this);      
         if(this.canClean()){
+            System.out.println("Cleaned Room");
             newStateSpace.currentRoom.cleanRoom();
             newStateSpace.actionList.add("Vacuumed");
             return newStateSpace;
@@ -78,8 +79,12 @@ public class StateSpace {
     }
     
     public boolean canMoveLeft(){
-        if(this.currentRoom.getRow() != 0 && rooms[this.currentRoom.getRow()-1][this.currentRoom.getColumn()].isVisited() == false){
-            return true;
+        System.out.println("Checking if can move left");
+        if(this.currentRoom.getColumn() != 0){
+            if(rooms[this.currentRoom.getRow()][this.currentRoom.getColumn()-1].isVisited() == false){
+                return true;
+            }
+            return false;
         }
         else{
             return false;
@@ -87,24 +92,36 @@ public class StateSpace {
     }
     
     public boolean canMoveRight(){
-        if(this.currentRoom.getRow() != rooms.length && rooms[this.currentRoom.getRow()+1][this.currentRoom.getColumn()].isVisited() == false){
-            return true;
+        System.out.println("Checking if can move right");
+        if(this.currentRoom.getColumn() != rooms[0].length){
+            if(rooms[this.currentRoom.getRow()][this.currentRoom.getColumn()+1].isVisited() == false){
+                return true;
+            }
+            return false;
         }
         else{
             return false;
         }
     }
     public boolean canMoveUp(){
-        if(this.currentRoom.getColumn() != 0 && rooms[this.currentRoom.getRow()][this.currentRoom.getColumn()-1].isVisited() == false){
-            return true;
+        System.out.println("Checking if can move up");
+        if(this.currentRoom.getRow() != 0){
+            if(rooms[this.currentRoom.getRow()-1][this.currentRoom.getColumn()].isVisited() == false){
+                return true;
+            }
+            return false;
         }
         else{
             return false;
         }
     }
     public boolean canMoveDown(){
-        if(this.currentRoom.getColumn() != rooms[0].length && rooms[this.currentRoom.getRow()][this.currentRoom.getColumn()+1].isVisited() == false){
-            return true;
+        System.out.println("Checking if can move down");
+        if(this.currentRoom.getRow() != rooms.length){
+            if(rooms[this.currentRoom.getRow()+1][this.currentRoom.getColumn()].isVisited() == false){
+                return true;
+            }
+            return false;
         }
         else{
             return false;
@@ -116,6 +133,7 @@ public class StateSpace {
     public StateSpace move(String direction){
         StateSpace newStateSpace = this;
         newStateSpace.setParentStateSpace(this);
+        System.out.println("Room Before Move: " + this.currentRoom.getRow() + "," + this.currentRoom.getColumn());
         
         switch(direction){
             case "left": if(this.canMoveLeft()){
@@ -124,13 +142,14 @@ public class StateSpace {
                             //If Can Move, Remove Vacuum from the Room
                             newStateSpace.currentRoom.removeVacuum();
                             //Adjust The Current Room
-                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()-1][newStateSpace.currentRoom.getColumn()];
+                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()][newStateSpace.currentRoom.getColumn()-1];
                             //Set Room to Being Visited
                             newStateSpace.currentRoom.setVisited();
                             //Set Vacuum in Room
                             newStateSpace.currentRoom.setVacuum();
                             //Update Action List
                             newStateSpace.actionList.add("left");
+                            newStateSpace.currentRoom.setVisited();
                             
                             return newStateSpace;
                          } else{newStateSpace = null; return null; }
@@ -140,13 +159,14 @@ public class StateSpace {
                             //If Can Move, Remove Vacuum from the Room
                             newStateSpace.currentRoom.removeVacuum();
                             //Adjust The Current Room
-                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()+1][newStateSpace.currentRoom.getColumn()];
+                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()][newStateSpace.currentRoom.getColumn()+1];
                             //Set Room to Being Visited
                             newStateSpace.currentRoom.setVisited();
                             //Set Vacuum in Room
                             newStateSpace.currentRoom.setVacuum();
                             //Update Action List
                             newStateSpace.actionList.add("right");
+                            newStateSpace.currentRoom.setVisited();
                             return newStateSpace;
                          } else{newStateSpace = null; return null; }
             
@@ -155,13 +175,14 @@ public class StateSpace {
                             //If Can Move, Remove Vacuum from the Room
                             newStateSpace.currentRoom.removeVacuum();
                             //Adjust The Current Room
-                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()-1][newStateSpace.currentRoom.getColumn()-1];
+                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()-1][newStateSpace.currentRoom.getColumn()];
                             //Set Room to Being Visited
                             newStateSpace.currentRoom.setVisited();
                             //Set Vacuum in Room
                             newStateSpace.currentRoom.setVacuum();
                             //Update Action List
                             newStateSpace.actionList.add("up");
+                            newStateSpace.currentRoom.setVisited();
                             return newStateSpace;
                          } else{newStateSpace = null; return null; }
             
@@ -170,13 +191,14 @@ public class StateSpace {
                             //If Can Move, Remove Vacuum from the Room
                             newStateSpace.currentRoom.removeVacuum();
                             //Adjust The Current Room
-                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()][newStateSpace.currentRoom.getColumn()+1];
+                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()+1][newStateSpace.currentRoom.getColumn()];
                             //Set Room to Being Visited
                             newStateSpace.currentRoom.setVisited();
                             //Set Vacuum in Room
                             newStateSpace.currentRoom.setVacuum();
                             //Update Action List
                             newStateSpace.actionList.add("down");
+                            newStateSpace.currentRoom.setVisited();
                             return newStateSpace;
                          } else{newStateSpace = null; return newStateSpace;}
             default: newStateSpace = null; return null;           
@@ -190,6 +212,7 @@ public class StateSpace {
     public StateSpace(Room[][] rooms){
         this.rooms = rooms;
         setCurrentRoom();
+        this.currentRoom.setVisited();
         
     }
  
