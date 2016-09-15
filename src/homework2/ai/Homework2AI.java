@@ -78,6 +78,7 @@ public class Homework2AI extends Application {
                 System.out.println("Running the IDS Algorithm");
                 AlgorithmIDS searchIDS = new AlgorithmIDS();
                 StateSpace newStateSpace = searchIDS.doStuff(currentStateSpace);
+                if(newStateSpace != null)
                 newStateSpace.updateStateSpaceDisplay(grid);
             }  
         });
