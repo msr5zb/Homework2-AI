@@ -23,6 +23,9 @@ public class StateSpace {
     private Room currentRoom;
     List<String> actionList = new ArrayList<String>();
     private int score;
+    StateSpace parentStateSpace;
+    
+
     
     //Calculates and Returns the Score
     private int getScore(){
@@ -231,6 +234,14 @@ public class StateSpace {
         grid.getChildren().add(dirtyRoomCount);
     }
     
-
+    //Sets Parent StateSpace of Current State Space
+    public void setParentStateSpace(StateSpace parent){
+        this.parentStateSpace = parent;
+    }
+    
+    //Returns StateSpace's Parent
+    public StateSpace getParentStateSpace(){
+        return this.parentStateSpace;
+    }
   
 }
