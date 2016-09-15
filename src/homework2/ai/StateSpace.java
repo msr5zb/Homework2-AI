@@ -25,7 +25,9 @@ public class StateSpace {
     private int score;
     StateSpace parentStateSpace;
     private int depth = 0;
-    List<StateSpace> children = new ArrayList<StateSpace>();
+    HashMap<String, StateSpace> childMap = new HashMap<String, StateSpace>();
+    
+    
     
     public StateSpace(){
         
@@ -38,45 +40,62 @@ public class StateSpace {
         childStateSpace.score = this.score;
         childStateSpace.parentStateSpace = this;
         childStateSpace.depth = this.depth;
-       
+        childStateSpace.childMap = null;
 
     }
     
-    public List<StateSpace> getChildren(){
-        this.children.clear();
+    
+    public HashMap<String,StateSpace> getChildren(){
+        return this.childMap;
+    }
+    public void generateChildren(){
+        this.childMap.clear();
         if(this.canClean() == true){
             //If Dirty, Make a New Child State with Cleaned Room
             StateSpace childNode1 = this.cleanCurrentRoom();
-            this.children.add(childNode1);
-
+            this.childMap.put("cleanChild", childNode1);
+        }
+        else{
+            this.childMap.put("cleanChild", null);
         }
         if(this.canMoveLeft() == true){
             System.out.println("Attempting to move left");
             //If Can move Left, Make a New Child State That has Moved Left
             StateSpace childNode2 = this.move("left");
-            this.children.add(childNode2);
-
+            this.childMap.put("leftChild", childNode2);
+            
         }  
+        else{
+            this.childMap.put("leftChild", null);
+        }
         if(this.canMoveRight() == true){
             //If Can move Left, Make a New Child State That has Moved Left
             StateSpace childNode3 = this.move("right");
-            this.children.add(childNode3);
+            this.childMap.put("rightChild", childNode3);
 
         }  
+        else{
+            this.childMap.put("rightChild", null);
+        }
         if(this.canMoveUp() == true){
             //If Can move Left, Make a New Child State That has Moved Left
             StateSpace childNode4 = this.move("up");
-            this.children.add(childNode4);
+            this.childMap.put("upChild", childNode4);
 
         } 
+        else{
+            this.childMap.put("upChild", null);
+        }
         if(this.canMoveDown() == true){
             //If Can move Left, Make a New Child State That has Moved Left
             StateSpace childNode5 = this.move("down");
-            this.children.add(childNode5);
+            this.childMap.put("downChild", childNode5);
 
-        }      
+        }  
+        else{
+            this.childMap.put("downChild", null);
+        }
 
-        return this.children;
     }
     
     public int getDepth(){

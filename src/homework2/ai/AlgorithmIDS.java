@@ -5,6 +5,7 @@
  */
 package homework2.ai;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class AlgorithmIDS {
         
         else{
             //foreach child of node (Clean, Left, Right Up, Down
-            List<StateSpace> children = node.getChildren();
+            HashMap<String, StateSpace> children = node.getChildren();
             System.out.println("CHILDREN MADE");
             if(children.size()==0 || children == null){
                 System.out.println("Gotcha");

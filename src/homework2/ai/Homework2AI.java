@@ -114,6 +114,19 @@ public class Homework2AI extends Application {
         GridPane.setConstraints(aStarButton, rows+3, 2);
         grid.getChildren().add(aStarButton);    
         
+         //The A* Stuffs
+        Button showChildren = new Button("Children");
+          showChildren.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Children Demo");
+                ChildrenDemo childrenDemo = new ChildrenDemo(currentStateSpace);
+                currentStateSpace.updateStateSpaceDisplay(grid);
+            }  
+        });
+        GridPane.setConstraints(showChildren, rows, 3);
+        grid.getChildren().add(showChildren);
+        
         //Display
         currentStateSpace.updateStateSpaceDisplay(grid);
         
