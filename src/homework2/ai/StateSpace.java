@@ -26,12 +26,21 @@ public class StateSpace {
     StateSpace parentStateSpace;
     
 
+    public void printActionList(){
+        int i = 0;
+        while (i< this.actionList.size()) {
+            System.out.println(this.actionList.get(i));
+            i++;
+        }
+    }
+    
+
     
     //Calculates and Returns the Score
     private int getScore(){
         this.score = 0;
-        for (int i = 0; i < actionList.size(); i++) {
-            switch(actionList.get(i)){
+        for (int i = 0; i < this.actionList.size(); i++) {
+            switch(this.actionList.get(i)){
                 case "suck" : this.score+=0;break;
                 case "up" : this.score+=1.3;break;
                 case "down" : this.score+=1.3;break;
@@ -43,10 +52,33 @@ public class StateSpace {
         return this.score;
     }
     
-    public boolean cleanCurrentRoom(){
+
+    
+    public boolean canClean(){
         if(this.currentRoom.isDirty()){
-            this.currentRoom.cleanRoom();
-            actionList.add("Vacuumed");
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+ 
+    public StateSpace cleanCurrentRoom(){
+        StateSpace newStateSpace = this;
+        newStateSpace.setParentStateSpace(this);      
+        if(this.canClean()){
+            newStateSpace.currentRoom.cleanRoom();
+            newStateSpace.actionList.add("Vacuumed");
+            return newStateSpace;
+        }
+        else{
+            newStateSpace = null;
+            return newStateSpace;
+        }
+    }
+    
+    public boolean canMoveLeft(){
+        if(this.currentRoom.getRow() != 0 && rooms[this.currentRoom.getRow()-1][this.currentRoom.getColumn()].isVisited() == false){
             return true;
         }
         else{
@@ -54,131 +86,104 @@ public class StateSpace {
         }
     }
     
-    //Returns True on Successful Move. False otherwise. Cannot move to already visited rooms.
-    public boolean move(String direction){
-        
-        switch(direction){
-            case "left": if(this.currentRoom.getRow() != 0 && rooms[this.currentRoom.getRow()-1][this.currentRoom.getColumn()].isVisited() == false){
-                            //If Can Move, Remove Vacuum from the Room
-                            this.currentRoom.removeVacuum();
-                            //Adjust The Current Room
-                            this.currentRoom = rooms[this.currentRoom.getRow()-1][this.currentRoom.getColumn()];
-                            //Set Room to Being Visited
-                            this.currentRoom.setVisited();
-                            //Set Vacuum in Room
-                            this.currentRoom.setVacuum();
-                            this.actionList.add("left");
-                            //Update Action List
-                            return true;
-                         } else{return false;}
-            
-            case "right": if(this.currentRoom.getRow() != rooms.length && rooms[this.currentRoom.getRow()+1][this.currentRoom.getColumn()].isVisited() == false){
-                            //If Can Move, Remove Vacuum from the Room
-                            this.currentRoom.removeVacuum();
-                            //Adjust The Current Room
-                            this.currentRoom = rooms[this.currentRoom.getRow()+1][this.currentRoom.getColumn()];
-                            //Set Room to Being Visited
-                            this.currentRoom.setVisited();
-                            //Set Vacuum in Room
-                            this.currentRoom.setVacuum();
-                            //Update Action List
-                            this.actionList.add("right");
-                            return true;
-                         } else{return false;}
-            
-            case "up": if(this.currentRoom.getColumn() != 0 && rooms[this.currentRoom.getRow()-1][this.currentRoom.getColumn()-1].isVisited() == false){
-                            //If Can Move, Remove Vacuum from the Room
-                            this.currentRoom.removeVacuum();
-                            //Adjust The Current Room
-                            this.currentRoom = rooms[this.currentRoom.getRow()-1][this.currentRoom.getColumn()-1];
-                            //Set Room to Being Visited
-                            this.currentRoom.setVisited();
-                            //Set Vacuum in Room
-                            this.currentRoom.setVacuum();
-                            //Update Action List
-                            this.actionList.add("up");
-                            return true;
-                         } else{return false;}
-            
-            case "down": if(this.currentRoom.getColumn() != rooms[0].length && rooms[this.currentRoom.getRow()][this.currentRoom.getColumn()+1].isVisited() == false){ //Check if it'll be in bounds
-                             //If Can Move, Remove Vacuum from the Room
-                            this.currentRoom.removeVacuum();
-                            //Adjust The Current Room
-                            this.currentRoom = rooms[this.currentRoom.getRow()][this.currentRoom.getColumn()+1];
-                            //Set Room to Being Visited
-                            this.currentRoom.setVisited();
-                            //Set Vacuum in Room
-                            this.currentRoom.setVacuum();
-                            //Update Action List
-                            this.actionList.add("down");
-                            return true;
-                         } else{return false;}
-            default: return false;           
+    public boolean canMoveRight(){
+        if(this.currentRoom.getRow() != rooms.length && rooms[this.currentRoom.getRow()+1][this.currentRoom.getColumn()].isVisited() == false){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public boolean canMoveUp(){
+        if(this.currentRoom.getColumn() != 0 && rooms[this.currentRoom.getRow()][this.currentRoom.getColumn()-1].isVisited() == false){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public boolean canMoveDown(){
+        if(this.currentRoom.getColumn() != rooms[0].length && rooms[this.currentRoom.getRow()][this.currentRoom.getColumn()+1].isVisited() == false){
+            return true;
+        }
+        else{
+            return false;
         }
     }
     
-    //Returns True on Successful Move. False otherwise. Can move to already visited rooms.
-    public boolean moveUnlimited(String direction){
+    
+    //Returns True on Successful Move. False otherwise. Cannot move to already visited rooms.
+    public StateSpace move(String direction){
+        StateSpace newStateSpace = this;
+        newStateSpace.setParentStateSpace(this);
         
         switch(direction){
-            case "left": if(this.currentRoom.getRow() != 0){
+            case "left": if(this.canMoveLeft()){
+                            
+                            System.out.println("Moving Left!");
                             //If Can Move, Remove Vacuum from the Room
-                            this.currentRoom.removeVacuum();
+                            newStateSpace.currentRoom.removeVacuum();
                             //Adjust The Current Room
-                            this.currentRoom = rooms[this.currentRoom.getRow()-1][this.currentRoom.getColumn()];
+                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()-1][newStateSpace.currentRoom.getColumn()];
                             //Set Room to Being Visited
-                            this.currentRoom.setVisited();
+                            newStateSpace.currentRoom.setVisited();
                             //Set Vacuum in Room
-                            this.currentRoom.setVacuum();
-                            this.actionList.add("left");
+                            newStateSpace.currentRoom.setVacuum();
                             //Update Action List
-                            return true;
-                         } else{return false;}
+                            newStateSpace.actionList.add("left");
+                            
+                            return newStateSpace;
+                         } else{newStateSpace = null; return null; }
             
-            case "right": if(this.currentRoom.getRow() != rooms.length){
+            case "right": if(this.canMoveRight()){
+                            System.out.println("Moving Right!");
                             //If Can Move, Remove Vacuum from the Room
-                            this.currentRoom.removeVacuum();
+                            newStateSpace.currentRoom.removeVacuum();
                             //Adjust The Current Room
-                            this.currentRoom = rooms[this.currentRoom.getRow()+1][this.currentRoom.getColumn()];
+                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()+1][newStateSpace.currentRoom.getColumn()];
                             //Set Room to Being Visited
-                            this.currentRoom.setVisited();
+                            newStateSpace.currentRoom.setVisited();
                             //Set Vacuum in Room
-                            this.currentRoom.setVacuum();
+                            newStateSpace.currentRoom.setVacuum();
                             //Update Action List
-                            this.actionList.add("right");
-                            return true;
-                         } else{return false;}
+                            newStateSpace.actionList.add("right");
+                            return newStateSpace;
+                         } else{newStateSpace = null; return null; }
             
-            case "up": if(this.currentRoom.getColumn() != 0){
+            case "up": if(this.canMoveUp()){
+                            System.out.println("Moving Up!");
                             //If Can Move, Remove Vacuum from the Room
-                            this.currentRoom.removeVacuum();
+                            newStateSpace.currentRoom.removeVacuum();
                             //Adjust The Current Room
-                            this.currentRoom = rooms[this.currentRoom.getRow()-1][this.currentRoom.getColumn()-1];
+                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()-1][newStateSpace.currentRoom.getColumn()-1];
                             //Set Room to Being Visited
-                            this.currentRoom.setVisited();
+                            newStateSpace.currentRoom.setVisited();
                             //Set Vacuum in Room
-                            this.currentRoom.setVacuum();
+                            newStateSpace.currentRoom.setVacuum();
                             //Update Action List
-                            this.actionList.add("up");
-                            return true;
-                         } else{return false;}
+                            newStateSpace.actionList.add("up");
+                            return newStateSpace;
+                         } else{newStateSpace = null; return null; }
             
-            case "down": if(this.currentRoom.getColumn() != rooms[0].length){ //Check if it'll be in bounds
-                             //If Can Move, Remove Vacuum from the Room
-                            this.currentRoom.removeVacuum();
+            case "down": if(this.canMoveDown()){ //Check if it'll be in bounds
+                            System.out.println("Moving Down!");
+                            //If Can Move, Remove Vacuum from the Room
+                            newStateSpace.currentRoom.removeVacuum();
                             //Adjust The Current Room
-                            this.currentRoom = rooms[this.currentRoom.getRow()][this.currentRoom.getColumn()+1];
+                            newStateSpace.currentRoom = rooms[newStateSpace.currentRoom.getRow()][newStateSpace.currentRoom.getColumn()+1];
                             //Set Room to Being Visited
-                            this.currentRoom.setVisited();
+                            newStateSpace.currentRoom.setVisited();
                             //Set Vacuum in Room
-                            this.currentRoom.setVacuum();
+                            newStateSpace.currentRoom.setVacuum();
                             //Update Action List
-                            this.actionList.add("down");
-                            return true;
-                         } else{return false;}
-            default: return false;           
+                            newStateSpace.actionList.add("down");
+                            return newStateSpace;
+                         } else{newStateSpace = null; return newStateSpace;}
+            default: newStateSpace = null; return null;           
         }
     }
+    
+    
     
   
     
@@ -188,7 +193,7 @@ public class StateSpace {
         
     }
  
-    private int getDirtyRoomCount(){
+    public int getDirtyRoomCount(){
         int numberOfDirtyRooms = 0;
         for(int i = 0; i < this.rooms.length; i++){
             for(int j = 0; j < this.rooms[0].length; j++){
