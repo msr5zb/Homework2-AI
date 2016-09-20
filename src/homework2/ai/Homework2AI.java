@@ -182,6 +182,20 @@ public class Homework2AI extends Application {
          buttonDFGS.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
+                
+                AlgorithmDFGS startDFGS = new AlgorithmDFGS();
+                StateSpace updatedState = startDFGS.IterationDFGS(getCurrentState());
+                if(updatedState!=null){
+                    updatedState.generateChildren();
+                    updatedState.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
+                    setCurrentState(updatedState);       
+                }
+                else{System.out.println("Lol gg");}
+                
+                
+                
+                
+                
 //                StateSpace updatedState = getCurrentState().getChildren().get("downChild");
 //                
 //                if(updatedState!=null){

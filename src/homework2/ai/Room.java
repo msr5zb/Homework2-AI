@@ -16,7 +16,15 @@ public class Room {
     private boolean hasVacuum = false;
     private boolean dirty = false;
     private boolean visited = false;
-  
+    private boolean discovered = false;
+    
+    public void setDiscovered(boolean value){
+        this.discovered = true;
+    }
+    public boolean getDiscovered(){
+        return this.discovered;
+    }
+    
     
     //Constructor, Creates Room Object placing it's Coords
     public Room(int row, int column){

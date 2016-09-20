@@ -118,6 +118,10 @@ public class StateSpace {
     public HashMap<String, StateSpace> getChildren(){return this.children;}     
     //Prints the Children
     public void printChildren(HashMap<String, StateSpace> children){
+        if(this.getParentStateSpace() != null){System.out.println("Parent: " + this.getParentStateSpace().getCurrentRoom().getPositionRow() +","+ this.getParentStateSpace().getCurrentRoom().getPositionColumn());}
+        else{System.out.println("Parent: Null");} 
+        //this.printCurrentRoomLocation();
+        
         if(this.children.get("cleanChild") != null){System.out.println("Clean Child: " + this.children.get("cleanChild").getCurrentRoom().getPositionRow() +","+ this.children.get("cleanChild").getCurrentRoom().getPositionColumn());}
         else{System.out.println("Clean Child: Null");}
         if(this.children.get("leftChild") != null){System.out.println("Left Child: " + this.children.get("leftChild").getCurrentRoom().getPositionRow() +","+ this.children.get("leftChild").getCurrentRoom().getPositionColumn());}
@@ -128,6 +132,8 @@ public class StateSpace {
         else{System.out.println("Up Child: Null");}
         if(this.children.get("downChild") != null){System.out.println("Down Child: " + this.children.get("downChild").getCurrentRoom().getPositionRow() +","+ this.children.get("downChild").getCurrentRoom().getPositionColumn());}
         else{System.out.println("Down Child: Null");}    
+        
+        
     }
     //Returns the number of Dirty Rooms
     public int getDirtyRoomCount(){
@@ -192,32 +198,37 @@ public class StateSpace {
         //If Dirty, Make a New Child State with Cleaned Room
         if(this.canClean() == true){           
             StateSpace childNode1 = this.cleanCurrentRoom();
+            childNode1.getCurrentRoom().setDiscovered(true);
             this.addChildren("cleanChild",childNode1);
         } else{this.addChildren("cleanChild",null);}
         
         //If Can move Left, Make a New Child State That has Moved Left
         if(this.canMoveLeft() == true){
             StateSpace childNode2 = this.move("left");
+            childNode2.getCurrentRoom().setDiscovered(true);
             this.addChildren("leftChild",childNode2);
         } else{this.addChildren("leftChild",null);}
         
         
         //If Can move Right, Make a New Child State That has Moved Right
         if(this.canMoveRight()== true){
-            StateSpace childNode2 = this.move("right");
-            this.addChildren("rightChild",childNode2);
+            StateSpace childNode3 = this.move("right");
+            childNode3.getCurrentRoom().setDiscovered(true);
+            this.addChildren("rightChild",childNode3);
         } else{this.addChildren("rightChild",null);}
         
         //If Can move Up, Make a New Child State That has Moved Up
         if(this.canMoveUp()== true){
-            StateSpace childNode2 = this.move("up");
-            this.addChildren("upChild",childNode2);
+            StateSpace childNode4 = this.move("up");
+            childNode4.getCurrentRoom().setDiscovered(true);
+            this.addChildren("upChild",childNode4);
         } else{this.addChildren("upChild",null);}
         
         //If Can move Down, Make a New Child State That has Moved Down
         if(this.canMoveDown()== true){
-            StateSpace childNode2 = this.move("down");
-            this.addChildren("downChild",childNode2);
+            StateSpace childNode5 = this.move("down");
+            childNode5.getCurrentRoom().setDiscovered(true);
+            this.addChildren("downChild",childNode5);
         } else{this.addChildren("downChild",null);}
         
         this.printChildren(this.getChildren());
