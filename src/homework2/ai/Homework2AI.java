@@ -35,40 +35,17 @@ public class Homework2AI extends Application {
         
         //Set Window's Title
         window.setTitle("Vacuum Cleaning Application!");
+
         
-  
-        
-        
-        
-        
-        //For the 4x4 Rooms (First Scenario)
-        int rows = 4;
-        int cols = 4;
-       
         //Initialize Rooms Array
-        Room[][] rooms = new Room[rows][cols];
-        
-        
-        //Create Rooms for First Scenario
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < cols; j++){
-                rooms[i][j] = new Room(i,j);
-            }
-        }
-      
-        //Place Initial Dirt
-        rooms[0][1].setDirty(true);
-        rooms[0][3].setDirty(true);
-        rooms[1][1].setDirty(true);
-        rooms[1][2].setDirty(true);
-        rooms[2][0].setDirty(true);
-        rooms[3][1].setDirty(true);
-        rooms[3][3].setDirty(true);
-        
-        //Set Initial Vacuum
-        rooms[2][1].setHasVacuum(true);
-       
+        Room[][] rooms = new Room[4][4];
+               
+        RoomGenerator roomFourByFourGenerator = new RoomGenerator();
+        roomFourByFourGenerator.createRooms(rooms);
  
+        int rows = rooms.length;
+        int cols = rooms[0].length;
+        
         //Our Layout
         GridPane grid = new GridPane();
         //Set Padding for Grid Cells
@@ -92,6 +69,11 @@ public class Homework2AI extends Application {
         Button rightButton = new Button("Right");
         Button upButton = new Button("Up");
         Button downButton = new Button("Down");
+        
+        Button buttonIDS = new Button("IDS");
+        Button buttonDFGS = new Button("DFGS");
+        Button buttonAStar = new Button("A*");
+        Button buttonRestart = new Button("Restart");
 
         GridPane.setConstraints(currentRoomLabel,rows+1 , 0);
         GridPane.setConstraints(dirtyRoomCountLabel, rows+1, 1);
@@ -105,14 +87,15 @@ public class Homework2AI extends Application {
         GridPane.setConstraints(leftButton, cols+4, 1);
         GridPane.setConstraints(rightButton, cols+6, 1);
         
-        grid.getChildren().addAll(currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListScrollPane, cleanButton, leftButton, rightButton, upButton, downButton);            
+        GridPane.setConstraints(buttonIDS,cols+2 , 0);
+        GridPane.setConstraints(buttonDFGS,cols+2 , 1);
+        GridPane.setConstraints(buttonAStar,cols+2 , 2);
+        GridPane.setConstraints(buttonRestart,cols+2 , 3);
+        
+        grid.getChildren().addAll(currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListScrollPane, cleanButton, leftButton, rightButton, upButton, downButton, buttonIDS, buttonDFGS, buttonAStar, buttonRestart);            
         getCurrentState().updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
         getCurrentState().generateChildren();
-        //currentStateSpace.generateChildren();
-        //currentStateSpace = currentStateSpace.getChildren().get("leftChild");
-        //currentStateSpace.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
 
-       
         
         cleanButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -181,9 +164,70 @@ public class Homework2AI extends Application {
                 else{System.out.println("Cannot Move This Direction.");}
             }  
         });
+
+         buttonIDS.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+//                StateSpace updatedState = getCurrentState().getChildren().get("downChild");
+//                
+//                if(updatedState!=null){
+//                    updatedState.generateChildren();
+//                    updatedState.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
+//                    setCurrentState(updatedState);       
+//                }
+//                else{System.out.println("Cannot Move This Direction.");}
+            }  
+        });
+
+         buttonDFGS.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+//                StateSpace updatedState = getCurrentState().getChildren().get("downChild");
+//                
+//                if(updatedState!=null){
+//                    updatedState.generateChildren();
+//                    updatedState.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
+//                    setCurrentState(updatedState);       
+//                }
+//                else{System.out.println("Cannot Move This Direction.");}
+            }  
+        });
+         
+         buttonAStar.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+//                StateSpace updatedState = getCurrentState().getChildren().get("downChild");
+//                
+//                if(updatedState!=null){
+//                    updatedState.generateChildren();
+//                    updatedState.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
+//                    setCurrentState(updatedState);       
+//                }
+//                else{System.out.println("Cannot Move This Direction.");}
+            }  
+        });
+         buttonRestart.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                //Initialize Rooms Array
+                Room[][] rooms = new Room[4][4];
+
+                RoomGenerator roomFourByFourGenerator = new RoomGenerator();
+                roomFourByFourGenerator.createRooms(rooms);
         
-     
-        
+                //Update State Display
+                StateSpace workingStateSpace = new StateSpace(rooms, rooms.length, rooms[0].length);
+                setCurrentState(workingStateSpace);
+                
+                               
+                if(workingStateSpace!=null){
+                    workingStateSpace.generateChildren();
+                    workingStateSpace.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
+                    setCurrentState(workingStateSpace);       
+                }
+                else{System.out.println("Cannot Move This Direction.");}
+            }  
+        });      
 
         
         Scene scene = new Scene(grid, 1000,600);
