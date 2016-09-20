@@ -16,62 +16,50 @@ public class Room {
     private boolean hasVacuum = false;
     private boolean dirty = false;
     private boolean visited = false;
-   
+  
+    
     //Constructor, Creates Room Object placing it's Coords
     public Room(int row, int column){
-        this.positionRow = row;
-        this.positionColumn = column;
+        this.setPositionRow(row);
+        this.setPositionColumn(column);
+        this.setHasVacuum(false);
+        this.setDirty(false);
+        this.setVisited(false);
     } 
     
-    //Returns whether the Room was already Visited or not.
-    public boolean isVisited(){
-        return visited;
+    //Sets Position of Room's Row
+    public void setPositionRow(int value){this.positionRow = value;}
+    //Gets Position of Room's Row
+    public int getPositionRow(){return this.positionRow;}
+    //Sets Position of Room's Column
+    public void setPositionColumn(int value){this.positionColumn = value;}
+    //Gets Position of Room's Column
+    public int getPositionColumn(){return this.positionColumn;}  
+    //Sets Value of Vacuum
+    public void setHasVacuum(boolean value){this.hasVacuum = value;}
+    //Gets Value of Vacuum
+    public boolean getHasVacuum(){return this.hasVacuum;}  
+    //Sets Value of Dirty
+    public void setDirty(boolean value){this.dirty = value;}
+    //Gets Value of Dirty
+    public boolean getDirty(){return this.dirty;} 
+    //Sets Value of Visited
+    public void setVisited(boolean value){this.visited = value;}
+    //Gets Value of Visited
+    public boolean getVisited(){return this.visited;} 
+    
+    //Clones a Room
+    public Room cloneRoom(Room original){
+        Room clonedRoom = new Room(original.getPositionRow(), original.getPositionColumn());
+        clonedRoom.setHasVacuum(original.getHasVacuum());
+        clonedRoom.setDirty(original.getDirty());
+        clonedRoom.setVisited(original.getVisited());
+        
+        return clonedRoom;
     }
     
-    //Sets the Room to being Visited
-    public void setVisited(){
-        this.visited = true;
-    }
 
-    //Returns whether the Room is Cleaned or not.
-    public boolean isDirty(){
-        return dirty;
-    }
-    
-    //Returns whether the Room contains the Vacuum or not.
-    public boolean containsVacuum(){
-        return hasVacuum;
-    }
-    
-    //Returns Room's Row
-    public int getRow(){
-        return this.positionRow;
-    }
-    
-    //Returns Room's Column
-    public int getColumn(){
-        return this.positionColumn;
-    }
-    //Places the Vacuum Into Room
-    public void setVacuum(){
-        this.hasVacuum = true;
-    }
-    
-    //Removes Vacuum from the Room
-    public void removeVacuum(){
-        this.hasVacuum = false;
-    }
-    
-    //Makes the Room Dirty.
-    public void makeDirty(){
-        this.dirty = true;
-    }
-    
-    //Makes the Room Clean.
-    public void cleanRoom(){
-        this.dirty = false;
-    }
-    
-    
+
+  
     
 }
