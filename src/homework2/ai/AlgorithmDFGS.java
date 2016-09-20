@@ -20,56 +20,92 @@ public class AlgorithmDFGS {
     
     
     //Up, Left, Clean, Right, Down
-    public StateSpace IterationDFGS(StateSpace parentStateSpace){
-       if(parentStateSpace == null){return null;}
+    //Returns The Goal State if Found, Null Otherwise
+    public StateSpace IterationDFGS(StateSpace workingStateSpace){
+        if(workingStateSpace == null){return null;}
         
-        if(parentStateSpace != null){parentStateSpace.printCurrentRoomLocation();}
-        else{System.out.println("WHOAH NULLY");}
+        workingStateSpace.printCurrentRoomLocation();
 
-        System.out.println("Dirty Room Count is: " + parentStateSpace.getDirtyRoomCount());
+        System.out.println("Dirty Room Count is: " + workingStateSpace.getDirtyRoomCount());
 
-        if(parentStateSpace.getDirtyRoomCount() == 0){
-            return parentStateSpace;    
+        //Base Case
+        if(workingStateSpace.getDirtyRoomCount() == 0){
+            System.out.println("You did ITTTTTTTTTTTTTTTTTTT");
+            return workingStateSpace;    
         }
         
-        else{
-            //Returned a Parent
-         
-            if(parentStateSpace.getChildren() == null){parentStateSpace.generateChildren();}
+        
+       
+            //If Node Does Not have Children, Generate Them.
+            if(workingStateSpace.getChildren() == null || workingStateSpace.getChildren().isEmpty()){
+                System.out.println("No Children Found, Making Babies...");
+                workingStateSpace.generateChildren();
+            }
             
-            
-            
-            if(parentStateSpace.getChildren().get("upChild") != null ){
-                //If Our Child is the Desired StateSpace, return it
-                if(parentStateSpace.getChildren().get("upChild").getDirtyRoomCount() == 0){
-                    return parentStateSpace.getChildren().get("upChild");
+            //If Node has an Up Child, Run the Algorithm on our up child.
+            if(workingStateSpace.getChildren().get("upChild") != null ){
+                
+                //Return What the Child Node Gives
+                StateSpace childStateSpace = IterationDFGS(workingStateSpace.getChildren().get("upChild"));
+                //If The Child Is the Goal State, Return
+                if(childStateSpace != null){
+                    if(childStateSpace.getDirtyRoomCount() == 0){
+                        return childStateSpace;
+                    }
                 }
-                //Else, Run the Algorithm of the Child
-                else{
-                    IterationDFGS(parentStateSpace.getChildren().get("upChild"));
-                }   
             }
             
+             //If Node has a Left Child, Run the Algorithm on our up child.
+            if(workingStateSpace.getChildren().get("leftChild") != null ){
+                //Return What the Child Node Gives
+                StateSpace childStateSpace = IterationDFGS(workingStateSpace.getChildren().get("leftChild"));
+                //If The Child Is the Goal State, Return
+                if(childStateSpace != null){
+                    if(childStateSpace.getDirtyRoomCount() == 0){
+                        return childStateSpace;
+                    }
+                }
+            }
+             //If Node has a Left Child, Run the Algorithm on our up child.
+            if(workingStateSpace.getChildren().get("cleanChild") != null ){
+                //Return What the Child Node Gives
+                StateSpace childStateSpace = IterationDFGS(workingStateSpace.getChildren().get("cleanChild"));
+                //If The Child Is the Goal State, Return
+                if(childStateSpace != null){
+                    if(childStateSpace.getDirtyRoomCount() == 0){
+                        return childStateSpace;
+                    }
+                }
+            }
+             //If Node has a Left Child, Run the Algorithm on our up child.
+            if(workingStateSpace.getChildren().get("rightChild") != null ){
+                //Return What the Child Node Gives
+                StateSpace childStateSpace = IterationDFGS(workingStateSpace.getChildren().get("rightChild"));
+                //If The Child Is the Goal State, Return
+                if(childStateSpace != null){
+                    if(childStateSpace.getDirtyRoomCount() == 0){
+                        return childStateSpace;
+                    }
+                }
+            }
+             //If Node has a Left Child, Run the Algorithm on our up child.
+            if(workingStateSpace.getChildren().get("downChild") != null ){
+                //Return What the Child Node Gives
+                StateSpace childStateSpace = IterationDFGS(workingStateSpace.getChildren().get("downChild"));
+                //If The Child Is the Goal State, Return
+                if(childStateSpace != null){
+                    if(childStateSpace.getDirtyRoomCount() == 0){
+                        return childStateSpace;
+                    }
+                }
+            }        
             
             
-            if(parentStateSpace.getChildren().get("leftChild") != null){
-                return IterationDFGS(parentStateSpace.getChildren().get("leftChild"));
-            }
-            if(parentStateSpace.getChildren().get("cleanChild") != null){
-                return IterationDFGS(parentStateSpace.getChildren().get("cleanChild"));
-            }
-            if(parentStateSpace.getChildren().get("rightChild") != null){
-                return IterationDFGS(parentStateSpace.getChildren().get("rightChild"));
-            }
-            if(parentStateSpace.getChildren().get("downChild") != null){
-                return IterationDFGS(parentStateSpace.getChildren().get("downChild"));
-            } 
-            else{
                 System.out.println("ALL NODES DISCOVERED, Backing Up~");
-                return IterationDFGS(null);
-            }
+                return null;
             
-        }
+            
+        
 
         
     }

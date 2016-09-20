@@ -67,7 +67,7 @@ public class StateSpace {
     }
     //Prints out the Current Room that our State has the Vacuum in.
     public void printCurrentRoomLocation(){
-        System.out.println("Current Room is in: " + this.currentRoom.getPositionRow()+ "," + this.currentRoom.getPositionColumn());
+        System.out.println("**********CURRENT ROOM is in: " + this.currentRoom.getPositionRow()+ "," + this.currentRoom.getPositionColumn());
     }
     //Sets the RoomsArray
     public void setRoomsArray(Room[][] rooms){this.roomsArray = rooms;}
