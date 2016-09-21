@@ -27,7 +27,9 @@ import javafx.stage.Stage;
 public class Homework2AI extends Application {
     
     StateSpace currentStateSpace;
-    
+    int rows = 0;
+    int columns = 0;
+        
     @Override
     public void start(Stage primaryStage) {
         //Our Window
@@ -36,15 +38,17 @@ public class Homework2AI extends Application {
         //Set Window's Title
         window.setTitle("Vacuum Cleaning Application!");
 
+        //Default Room
+        setRows(4);
+        setColumns(4);
         
         //Initialize Rooms Array
-        Room[][] rooms = new Room[4][4];
+        Room[][] rooms = new Room[getRows()][getColumns()];
                
         RoomGenerator roomFourByFourGenerator = new RoomGenerator();
         roomFourByFourGenerator.createRooms(rooms);
  
-        int rows = rooms.length;
-        int cols = rooms[0].length;
+        
         
         //Our Layout
         GridPane grid = new GridPane();
@@ -52,7 +56,7 @@ public class Homework2AI extends Application {
         grid.setPadding(new Insets(20,20,20,20)); 
 
         //Update State Display
-        StateSpace workingStateSpace = new StateSpace(rooms, rows, cols);
+        StateSpace workingStateSpace = new StateSpace(rooms, getRows(), getColumns());
         setCurrentState(workingStateSpace);
         
         //Labels n Stuffs
@@ -74,25 +78,27 @@ public class Homework2AI extends Application {
         Button buttonDFGS = new Button("DFGS");
         Button buttonAStar = new Button("A*");
         Button buttonRestart = new Button("Restart");
+        Button buttonToggleRooms = new Button("ToggleRooms");
 
-        GridPane.setConstraints(currentRoomLabel,rows+1 , 0);
-        GridPane.setConstraints(dirtyRoomCountLabel, rows+1, 1);
-        GridPane.setConstraints(scoreLabel, rows+1, 2);
-        GridPane.setConstraints(depthLabel, rows+1, 3);
-        GridPane.setConstraints(actionListScrollPane, rows+1, 4, 2, 1);
+        GridPane.setConstraints(currentRoomLabel,getRows()+1 , 0);
+        GridPane.setConstraints(dirtyRoomCountLabel, getRows()+1, 1);
+        GridPane.setConstraints(scoreLabel, getRows()+1, 2);
+        GridPane.setConstraints(depthLabel, getRows()+1, 3);
+        GridPane.setConstraints(actionListScrollPane, getRows()+1, 4, 2, 1);
         
-        GridPane.setConstraints(upButton, cols+5, 0);
-        GridPane.setConstraints(cleanButton, cols+5, 1);
-        GridPane.setConstraints(downButton, cols+5, 2);
-        GridPane.setConstraints(leftButton, cols+4, 1);
-        GridPane.setConstraints(rightButton, cols+6, 1);
+        GridPane.setConstraints(upButton, getColumns()+5, 0);
+        GridPane.setConstraints(cleanButton, getColumns()+5, 1);
+        GridPane.setConstraints(downButton, getColumns()+5, 2);
+        GridPane.setConstraints(leftButton, getColumns()+4, 1);
+        GridPane.setConstraints(rightButton, getColumns()+6, 1);
         
-        GridPane.setConstraints(buttonIDS,cols+2 , 0);
-        GridPane.setConstraints(buttonDFGS,cols+2 , 1);
-        GridPane.setConstraints(buttonAStar,cols+2 , 2);
-        GridPane.setConstraints(buttonRestart,cols+2 , 3);
+        GridPane.setConstraints(buttonIDS,getColumns()+2 , 0);
+        GridPane.setConstraints(buttonDFGS,getColumns()+2 , 1);
+        GridPane.setConstraints(buttonAStar,getColumns()+2 , 2);
+        GridPane.setConstraints(buttonRestart,getColumns()+2 , 3);
+        GridPane.setConstraints(buttonToggleRooms,getColumns()+3 , 0);
         
-        grid.getChildren().addAll(currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListScrollPane, cleanButton, leftButton, rightButton, upButton, downButton, buttonIDS, buttonDFGS, buttonAStar, buttonRestart);            
+        grid.getChildren().addAll(currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListScrollPane, cleanButton, leftButton, rightButton, upButton, downButton, buttonIDS, buttonDFGS, buttonAStar, buttonRestart, buttonToggleRooms);            
         getCurrentState().updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
         getCurrentState().generateChildren();
 
@@ -168,42 +174,39 @@ public class Homework2AI extends Application {
          buttonIDS.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-//                StateSpace updatedState = getCurrentState().getChildren().get("downChild");
-//                
-//                if(updatedState!=null){
-//                    updatedState.generateChildren();
-//                    updatedState.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
-//                    setCurrentState(updatedState);       
-//                }
-//                else{System.out.println("Cannot Move This Direction.");}
+                AlgorithmIDS startIDS = new AlgorithmIDS();
+                long startTime = System.nanoTime();
+                StateSpace updatedState = startIDS.IterateIDS(getCurrentState());
+                long endTime = System.nanoTime();
+                long duration = (endTime - startTime); 
+                System.out.println("*******************************************************************************************");
+                System.out.println("Ran in: " + duration/1000000);
+                if(updatedState!=null){                   
+                    updatedState.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
+                    
+                    setCurrentState(updatedState);       
+                }
+                else{System.out.println("Lol gg");}
             }  
         });
 
          buttonDFGS.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                
+               
                 AlgorithmDFGS startDFGS = new AlgorithmDFGS();
+                long startTime = System.nanoTime();
                 StateSpace updatedState = startDFGS.IterationDFGS(getCurrentState());
-                if(updatedState!=null){
-                    updatedState.generateChildren();
+                long endTime = System.nanoTime();
+                long duration = (endTime - startTime); 
+                System.out.println("*******************************************************************************************");
+                System.out.println("Ran in: " + duration/1000000);
+                if(updatedState!=null){                   
                     updatedState.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
+                    
                     setCurrentState(updatedState);       
                 }
                 else{System.out.println("Lol gg");}
-                
-                
-                
-                
-                
-//                StateSpace updatedState = getCurrentState().getChildren().get("downChild");
-//                
-//                if(updatedState!=null){
-//                    updatedState.generateChildren();
-//                    updatedState.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
-//                    setCurrentState(updatedState);       
-//                }
-//                else{System.out.println("Cannot Move This Direction.");}
             }  
         });
          
@@ -224,13 +227,14 @@ public class Homework2AI extends Application {
             @Override
             public void handle(ActionEvent event) {
                 //Initialize Rooms Array
-                Room[][] rooms = new Room[4][4];
+                
+                Room[][] rooms = new Room[getRows()][getColumns()];
 
-                RoomGenerator roomFourByFourGenerator = new RoomGenerator();
-                roomFourByFourGenerator.createRooms(rooms);
+                RoomGenerator roomGenerator = new RoomGenerator();
+                roomGenerator.createRooms(rooms);
         
                 //Update State Display
-                StateSpace workingStateSpace = new StateSpace(rooms, rooms.length, rooms[0].length);
+                StateSpace workingStateSpace = new StateSpace(rooms, getRows(), getColumns());
                 setCurrentState(workingStateSpace);
                 
                                
@@ -241,7 +245,40 @@ public class Homework2AI extends Application {
                 }
                 else{System.out.println("Cannot Move This Direction.");}
             }  
-        });      
+        }); 
+         
+         buttonToggleRooms.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(getRows() == 4){
+                    setRows(5);
+                    setColumns(6);  
+                }
+                else{
+                    setRows(4);
+                    setColumns(4);  
+                }
+                
+                
+                Room[][] rooms = new Room[getRows()][getColumns()];
+
+                RoomGenerator roomGenerator = new RoomGenerator();
+                roomGenerator.createRooms(rooms);
+        
+                //Update State Display
+                StateSpace workingStateSpace = new StateSpace(rooms, getRows(), getColumns());
+                setCurrentState(workingStateSpace);
+                
+                               
+                if(workingStateSpace!=null){
+                    workingStateSpace.generateChildren();
+                    workingStateSpace.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
+                    setCurrentState(workingStateSpace);       
+                }
+                else{System.out.println("Cannot Move This Direction.");}
+            }  
+        });          
+         
 
         
         Scene scene = new Scene(grid, 1000,600);
@@ -264,6 +301,20 @@ public class Homework2AI extends Application {
         if(workingStateSpace.getDirtyRoomCount()==0){System.out.println("YOU WIN!");}
         this.currentStateSpace = workingStateSpace;
     }
+    
+    public int getRows(){
+     return this.rows;   
+    }
+    public void setRows(int value){
+        this.rows = value;
+    }
+    public int getColumns(){
+     return this.columns;   
+    }
+    public void setColumns(int value){
+        this.columns = value;
+    }
+    
     public StateSpace getCurrentState(){return this.currentStateSpace;}
     /**
      * @param args the command line arguments
@@ -273,62 +324,3 @@ public class Homework2AI extends Application {
     }
     
 }
-
-
-//        //The DFGS Stuffs
-//        Button DFGSButton = new Button("DFGS");
-//        DFGSButton.setOnAction(new EventHandler<ActionEvent>(){
-//            @Override
-//            public void handle(ActionEvent event) {
-//                System.out.println("Running the DFGS Algorithm");
-//                AlgorithmDFGS searchDFGS = new AlgorithmDFGS();
-//                StateSpace newStateSpace = searchDFGS.doStuff(currentStateSpace);
-//                newStateSpace.updateStateSpaceDisplay(grid);
-//            }  
-//        });
-//        GridPane.setConstraints(DFGSButton, rows+2, 2);
-//        grid.getChildren().add(DFGSButton);        
-//        
-//        //The A* Stuffs
-//        Button aStarButton = new Button("A*");
-//          aStarButton.setOnAction(new EventHandler<ActionEvent>(){
-//            @Override
-//            public void handle(ActionEvent event) {
-//                System.out.println("Running the A* Algorithm");
-//                AlgorithmAStar searchAStar = new AlgorithmAStar();
-//                StateSpace newStateSpace = searchAStar.doStuff(currentStateSpace);
-//                newStateSpace.updateStateSpaceDisplay(grid);
-//            }  
-//        });
-//        GridPane.setConstraints(aStarButton, rows+3, 2);
-//        grid.getChildren().add(aStarButton);    
-//        
-//         //The A* Stuffs
-//        Button showChildren = new Button("Children");
-//          showChildren.setOnAction(new EventHandler<ActionEvent>(){
-//            @Override
-//            public void handle(ActionEvent event) {
-//                System.out.println("Children Demo");
-//                ChildrenDemo childrenDemo = new ChildrenDemo(currentStateSpace);
-//                currentStateSpace.updateStateSpaceDisplay(grid);
-//            }  
-//        });
-//        GridPane.setConstraints(showChildren, rows, 3);
-//        grid.getChildren().add(showChildren);
-//
-//
-//        //The IDS Stuffs
-//        Button IDSButton = new Button("IDS");
-//        IDSButton.setOnAction(new EventHandler<ActionEvent>(){
-//            @Override
-//            public void handle(ActionEvent event) {
-//                System.out.println("Running the IDS Algorithm");
-//                AlgorithmIDS searchIDS = new AlgorithmIDS();
-//                StateSpace newStateSpace = searchIDS.doStuff(currentStateSpace);
-//                if(newStateSpace != null)
-//                newStateSpace.updateStateSpaceDisplay(grid);
-//            }  
-//        });
-//        GridPane.setConstraints(IDSButton, rows+1, 2);
-//        grid.getChildren().add(IDSButton);
-//        

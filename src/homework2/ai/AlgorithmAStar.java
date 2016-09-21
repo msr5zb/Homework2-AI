@@ -18,5 +18,18 @@ public class AlgorithmAStar {
     }
     
     
+    public StateSpace IterationAStar(StateSpace currentStateSpace){
+        if(currentStateSpace == null){return null;}
+        
+        
+        
+        
+        return null;
+    }
+    
+    
+    
+    
+    
     
 }
