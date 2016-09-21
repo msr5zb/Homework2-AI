@@ -13,75 +13,72 @@ import java.util.List;
  * @author Mike
  */
 public class AlgorithmAStar {
-    
-    
-    
-    
-    public StateSpace doStuff(StateSpace currentStateSpace){
-       
-       System.out.println("I'm supposed to do stuff.");
-       return currentStateSpace;
-    }
-    
+    public AlgorithmAStar(){/*Default Constructor*/}
     
     public StateSpace IterationAStar(StateSpace workingStateSpace){
      
+        //Create Our Fringe
         List<StateSpace> fringe = new ArrayList<StateSpace>();
+        //Add First Node to Fringe
         fringe.add(workingStateSpace);
         
+        //While Rooms are Not all Cleaned
         while(workingStateSpace.getDirtyRoomCount() != 0){
+            
+            //Get Lowest Cost Node from Fringe
             workingStateSpace = getLowestCost(fringe);
+            //Print off Current Node
             workingStateSpace.printCurrentRoomLocation();
-            
-            
-            
-            //up left clean right down
+
+            //Expand Node's Children
             workingStateSpace.generateChildren();
+            
+            //Add Up Child to the Fringe
             if(workingStateSpace.getChildren().get("upChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("upChild"));
             }
+            //Add Left Child to the Fringe
             if(workingStateSpace.getChildren().get("leftChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("leftChild"));
             }
+            //Add Clean Child to the Fringe
             if(workingStateSpace.getChildren().get("cleanChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("cleanChild"));
             }
+            //Add Right Child to the Fringe
             if(workingStateSpace.getChildren().get("rightChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("rightChild"));
             }
+            //Add Down Child to the Fringe
             if(workingStateSpace.getChildren().get("downChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("downChild"));
             }
- 
+
         }
-  
+        
+        //Return The Final StateSpace (Which should be have 0 Dirty Rooms)
         return workingStateSpace;
-        
-        
-        
-        
+
     }
-    
-    
-    
+
+    //Returns Lowest Cost Node in a Fringe
     public StateSpace getLowestCost(List<StateSpace> fringe){
         
-        //Score of Path + # of Dirty Rooms
-        
-        
+        //Our Heuristic Values were calculated based off the Manhatten Distance + Number of Dirty Rooms.
         StateSpace lowestCostStateSpace;
         lowestCostStateSpace = fringe.get(0);
         int lowestCostIndex = 0;
         
+        //Loops Through Fringe
         for(int i = 0; i < fringe.size(); i++) {
-            
-            //if(lowestCostStateSpace.getScore() > fringe.get(i).getScore()){
+            //Find Lowest and Set it.
             if((lowestCostStateSpace.getScore() +  lowestCostStateSpace.getDirtyRoomCount()) > (fringe.get(i).getScore() + fringe.get(i).getDirtyRoomCount())){
                 lowestCostStateSpace = fringe.get(i);
                 lowestCostIndex = i;
             }
         } 
         
+        //Return the Lowest
         fringe.remove(lowestCostIndex);
         return lowestCostStateSpace;
     }

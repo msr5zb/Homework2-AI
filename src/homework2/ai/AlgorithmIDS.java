@@ -35,34 +35,34 @@ public class AlgorithmIDS {
             //Print off Current Node
             workingStateSpace.printCurrentRoomLocation();
             
-            //Expand Node
+            //Expand Node's Children
             workingStateSpace.generateChildren();
+            
+            //Add Up Child to the Fringe
             if(workingStateSpace.getChildren().get("upChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("upChild"));
             }
+            //Add Left Child to the Fringe
             if(workingStateSpace.getChildren().get("leftChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("leftChild"));
             }
+            //Add Clean Child to the Fringe
             if(workingStateSpace.getChildren().get("cleanChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("cleanChild"));
             }
+            //Add Right Child to the Fringe
             if(workingStateSpace.getChildren().get("rightChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("rightChild"));
             }
+            //Add Down Child to the Fringe
             if(workingStateSpace.getChildren().get("downChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("downChild"));
             }
  
         }
   
+        //Return The Final StateSpace (Which should be have 0 Dirty Rooms)
         return workingStateSpace;
-        
-        
-        
-        
+
     }
-    
-    
-
-
 }
