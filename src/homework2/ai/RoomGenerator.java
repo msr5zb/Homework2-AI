@@ -12,12 +12,7 @@ package homework2.ai;
 public class RoomGenerator {
  
     
-    public RoomGenerator(){
-  
-
-        
-        
-    }
+    public RoomGenerator(){}
     
     public void createRooms(Room[][] rooms){
         int rows = rooms.length;

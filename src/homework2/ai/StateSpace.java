@@ -198,14 +198,12 @@ public class StateSpace {
         //If Dirty, Make a New Child State with Cleaned Room
         if(this.canClean() == true){           
             StateSpace childNode1 = this.cleanCurrentRoom();
-            childNode1.getCurrentRoom().setDiscovered(true);
             this.addChildren("cleanChild",childNode1);
         } else{this.addChildren("cleanChild",null);}
         
         //If Can move Left, Make a New Child State That has Moved Left
         if(this.canMoveLeft() == true){
             StateSpace childNode2 = this.move("left");
-            childNode2.getCurrentRoom().setDiscovered(true);
             this.addChildren("leftChild",childNode2);
         } else{this.addChildren("leftChild",null);}
         
@@ -213,21 +211,18 @@ public class StateSpace {
         //If Can move Right, Make a New Child State That has Moved Right
         if(this.canMoveRight()== true){
             StateSpace childNode3 = this.move("right");
-            childNode3.getCurrentRoom().setDiscovered(true);
             this.addChildren("rightChild",childNode3);
         } else{this.addChildren("rightChild",null);}
         
         //If Can move Up, Make a New Child State That has Moved Up
         if(this.canMoveUp()== true){
             StateSpace childNode4 = this.move("up");
-            childNode4.getCurrentRoom().setDiscovered(true);
             this.addChildren("upChild",childNode4);
         } else{this.addChildren("upChild",null);}
         
         //If Can move Down, Make a New Child State That has Moved Down
         if(this.canMoveDown()== true){
             StateSpace childNode5 = this.move("down");
-            childNode5.getCurrentRoom().setDiscovered(true);
             this.addChildren("downChild",childNode5);
         } else{this.addChildren("downChild",null);}
         
@@ -351,19 +346,21 @@ public class StateSpace {
 
     
     //Displays out the Current StateSpace
-    public void updateStateSpaceDisplay(GridPane grid, Label currentRoomLabel, Label dirtyRoomCountLabel, Label scoreLabel, Label depthLabel, TextArea actionListTextArea){
+    public void updateStateSpaceDisplay(GridPane grid, Label costLabel, Label dirtyRoomLabel, Label depthLabel, Label currentRoomLabel, TextArea actionListTextArea){
         
         //Labels n Stuffs
-        currentRoomLabel.setText("Vacuum Location: " + this.getCurrentRoom().getPositionRow() + "," + this.getCurrentRoom().getPositionColumn());
-        dirtyRoomCountLabel.setText("Dirty Rooms: " + this.getDirtyRoomCount());
-        scoreLabel.setText("Score: " + this.getScore());
+        costLabel.setText("Cost: " + getScore());
+        dirtyRoomLabel.setText("Dirty Rooms: " + this.getDirtyRoomCount());
+        
         depthLabel.setText("Depth: " + this.getDepth());
+        currentRoomLabel.setText("Vacuum Location: " + this.getCurrentRoom().getPositionRow() + "," + this.getCurrentRoom().getPositionColumn());
+        
         actionListTextArea.setText("");
         for(int i = 0; i < this.actionList.size(); i++) {
             actionListTextArea.appendText(this.actionList.get(i) + "\n");
         }  
    
-        
+        grid.getChildren().clear();
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < this.columns; j++){
                 Button roomButton = new Button("Room: (" 

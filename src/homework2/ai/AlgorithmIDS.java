@@ -15,10 +15,11 @@ import java.util.List;
  */
 public class AlgorithmIDS {
     
-    
+    int nodeCounter = 0;
     public AlgorithmIDS(){/*Constructor*/}
 
     public StateSpace IterateIDS(StateSpace workingStateSpace){
+        
         
         //Create Our Fringe
         List<StateSpace> fringe = new ArrayList<StateSpace>();
@@ -27,6 +28,8 @@ public class AlgorithmIDS {
         
         //While Rooms are Not all Cleaned
         while(workingStateSpace.getDirtyRoomCount() != 0){
+            System.out.println("Working Node Number: " + nodeCounter++);
+            
             
             //Pop Off the FIRST Node from Fridnge
             workingStateSpace = fringe.get(0);
@@ -62,6 +65,7 @@ public class AlgorithmIDS {
         }
   
         //Return The Final StateSpace (Which should be have 0 Dirty Rooms)
+        System.out.println("Number of Nodes Expanded: " + nodeCounter);
         return workingStateSpace;
 
     }

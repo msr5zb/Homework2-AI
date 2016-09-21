@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class AlgorithmDFGS {
     
+    int nodeCounter = 0;
     public AlgorithmDFGS(){/*Default Constructor*/}
  
     //Returns The Goal State if Found, Null Otherwise
@@ -25,8 +26,9 @@ public class AlgorithmDFGS {
         
         //While Rooms are Not all Cleaned
         while(workingStateSpace.getDirtyRoomCount() != 0){
+            System.out.println("Working Node Number: " + nodeCounter++);
             
-            //Pop Off the FIRST Node from Fridnge
+            //Pop Off the LAST Node from Fridnge
             workingStateSpace = fringe.get(fringe.size()-1);
             fringe.remove(fringe.size()-1);
             
@@ -36,10 +38,9 @@ public class AlgorithmDFGS {
             //Expand Node's Children
             workingStateSpace.generateChildren();
             
-
-
-
-
+            //ADD NODES TO FRINGE WITH PRIORITY UP, LEFT, CLEAN, RIGHT, DOWN -> We push DOWN, RIGHT, CLEAN, LEFT, and then UP 
+            //So That when we take last from our Queue, it grabs UP, then LEFT... etc.
+            
             //Add Down Child to the Fringe
             if(workingStateSpace.getChildren().get("downChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("downChild"));
@@ -64,6 +65,7 @@ public class AlgorithmDFGS {
         }
   
         //Return The Final StateSpace (Which should be have 0 Dirty Rooms)
+        System.out.println("Number of Nodes Expanded: " + nodeCounter);
         return workingStateSpace;
 
     }        

@@ -13,6 +13,8 @@ import java.util.List;
  * @author Mike
  */
 public class AlgorithmAStar {
+    
+    int nodeCounter = 0;
     public AlgorithmAStar(){/*Default Constructor*/}
     
     public StateSpace IterationAStar(StateSpace workingStateSpace){
@@ -24,6 +26,7 @@ public class AlgorithmAStar {
         
         //While Rooms are Not all Cleaned
         while(workingStateSpace.getDirtyRoomCount() != 0){
+            System.out.println("Working Node Number: " + nodeCounter++);
             
             //Get Lowest Cost Node from Fringe
             workingStateSpace = getLowestCost(fringe);
@@ -57,6 +60,7 @@ public class AlgorithmAStar {
         }
         
         //Return The Final StateSpace (Which should be have 0 Dirty Rooms)
+        System.out.println("Number of Nodes Expanded: " + nodeCounter);
         return workingStateSpace;
 
     }
