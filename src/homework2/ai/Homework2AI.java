@@ -80,11 +80,11 @@ public class Homework2AI extends Application {
         Button buttonRestart = new Button("Restart");
         Button buttonToggleRooms = new Button("ToggleRooms");
 
-        GridPane.setConstraints(currentRoomLabel,getRows()+1 , 0);
-        GridPane.setConstraints(dirtyRoomCountLabel, getRows()+1, 1);
-        GridPane.setConstraints(scoreLabel, getRows()+1, 2);
-        GridPane.setConstraints(depthLabel, getRows()+1, 3);
-        GridPane.setConstraints(actionListScrollPane, getRows()+1, 4, 2, 1);
+        GridPane.setConstraints(currentRoomLabel,getRows()+2 , 0);
+        GridPane.setConstraints(dirtyRoomCountLabel, getRows()+2, 1);
+        GridPane.setConstraints(scoreLabel, getRows()+2, 2);
+        GridPane.setConstraints(depthLabel, getRows()+2, 3);
+        GridPane.setConstraints(actionListScrollPane, getRows()+2, 4, 2, 1);
         
         GridPane.setConstraints(upButton, getColumns()+5, 0);
         GridPane.setConstraints(cleanButton, getColumns()+5, 1);
@@ -92,11 +92,11 @@ public class Homework2AI extends Application {
         GridPane.setConstraints(leftButton, getColumns()+4, 1);
         GridPane.setConstraints(rightButton, getColumns()+6, 1);
         
-        GridPane.setConstraints(buttonIDS,getColumns()+2 , 0);
-        GridPane.setConstraints(buttonDFGS,getColumns()+2 , 1);
-        GridPane.setConstraints(buttonAStar,getColumns()+2 , 2);
-        GridPane.setConstraints(buttonRestart,getColumns()+2 , 3);
-        GridPane.setConstraints(buttonToggleRooms,getColumns()+3 , 0);
+        GridPane.setConstraints(buttonIDS,getColumns()+3 , 0);
+        GridPane.setConstraints(buttonDFGS,getColumns()+3 , 1);
+        GridPane.setConstraints(buttonAStar,getColumns()+3 , 2);
+        GridPane.setConstraints(buttonRestart,getColumns()+3 , 3);
+        GridPane.setConstraints(buttonToggleRooms,getColumns()+4 , 0);
         
         grid.getChildren().addAll(currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListScrollPane, cleanButton, leftButton, rightButton, upButton, downButton, buttonIDS, buttonDFGS, buttonAStar, buttonRestart, buttonToggleRooms);            
         getCurrentState().updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
