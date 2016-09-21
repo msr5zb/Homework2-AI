@@ -213,15 +213,21 @@ public class Homework2AI extends Application {
          buttonAStar.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-//                StateSpace updatedState = getCurrentState().getChildren().get("downChild");
-//                
-//                if(updatedState!=null){
-//                    updatedState.generateChildren();
-//                    updatedState.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
-//                    setCurrentState(updatedState);       
-//                }
-//                else{System.out.println("Cannot Move This Direction.");}
-            }  
+               
+                AlgorithmAStar startAStar = new AlgorithmAStar();
+                long startTime = System.nanoTime();
+                StateSpace updatedState = startAStar.IterationAStar(getCurrentState());
+                long endTime = System.nanoTime();
+                long duration = (endTime - startTime); 
+                System.out.println("*******************************************************************************************");
+                System.out.println("Ran in: " + duration/1000000);
+                if(updatedState!=null){                   
+                    updatedState.updateStateSpaceDisplay(grid, currentRoomLabel, dirtyRoomCountLabel, scoreLabel, depthLabel, actionListTextArea);
+                    
+                    setCurrentState(updatedState);       
+                }
+                else{System.out.println("Lol gg");}
+            }   
         });
          buttonRestart.setOnAction(new EventHandler<ActionEvent>(){
             @Override

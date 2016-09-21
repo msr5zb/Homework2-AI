@@ -16,25 +16,26 @@ import java.util.List;
 public class AlgorithmIDS {
     
     
-    public AlgorithmIDS(){
-        
-    }
-    
-    
-    
+    public AlgorithmIDS(){/*Constructor*/}
+
     public StateSpace IterateIDS(StateSpace workingStateSpace){
         
+        //Create Our Fringe
         List<StateSpace> fringe = new ArrayList<StateSpace>();
-        
+        //Add First Node to Fringe
         fringe.add(workingStateSpace);
         
+        //While Rooms are Not all Cleaned
         while(workingStateSpace.getDirtyRoomCount() != 0){
+            
+            //Pop Off the FIRST Node from Fridnge
             workingStateSpace = fringe.get(0);
             fringe.remove(0);
+            
+            //Print off Current Node
             workingStateSpace.printCurrentRoomLocation();
             
-            
-            //up left clean right down
+            //Expand Node
             workingStateSpace.generateChildren();
             if(workingStateSpace.getChildren().get("upChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("upChild"));
@@ -51,121 +52,10 @@ public class AlgorithmIDS {
             if(workingStateSpace.getChildren().get("downChild") != null){
                 fringe.add(workingStateSpace.getChildren().get("downChild"));
             }
-            
-            
-            
+ 
         }
-        
-        
-        
-        
-        
-        //Check if Null Node
-        if(workingStateSpace == null){return null;}
-        
-        //Print to Console Information
-        workingStateSpace.printCurrentRoomLocation();
-        System.out.println("Dirty Room Count is: " + workingStateSpace.getDirtyRoomCount());
-
-        while(workingStateSpace.getDirtyRoomCount() !=0){
-            
-            
-            
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        //Base Case
-        if(workingStateSpace.getDirtyRoomCount() == 0){
-            System.out.println("You did ITTTTTTTTTTTTTTTTTTT");
-            return workingStateSpace;    
-        }
-      
-        //If Node Does Not have Children, Generate Them.
-        if(workingStateSpace.getChildren() == null || workingStateSpace.getChildren().isEmpty()){
-            System.out.println("No Children Found, Making Babies...");
-            workingStateSpace.generateChildren();
-        }
-
-        //If Node has an Up Child, Run the Algorithm on our up child.
-        if(workingStateSpace.getChildren().get("upChild") != null ){
-
-            //Return What the Child Node Gives
-            StateSpace childStateSpace = IterateIDS(workingStateSpace.getChildren().get("upChild"));
-            //If The Child Is the Goal State, Return
-            if(childStateSpace != null){
-                if(childStateSpace.getDirtyRoomCount() == 0){
-                    return childStateSpace;
-                }
-            }
-        }
-
-        //If Node has a Left Child, Run the Algorithm on our up child.
-        if(workingStateSpace.getChildren().get("leftChild") != null ){
-            //Return What the Child Node Gives
-            StateSpace childStateSpace = IterateIDS(workingStateSpace.getChildren().get("leftChild"));
-            //If The Child Is the Goal State, Return
-            if(childStateSpace != null){
-                if(childStateSpace.getDirtyRoomCount() == 0){
-                    return childStateSpace;
-                }
-            }
-        }
-         //If Node has a Left Child, Run the Algorithm on our up child.
-        if(workingStateSpace.getChildren().get("cleanChild") != null ){
-            //Return What the Child Node Gives
-            StateSpace childStateSpace = IterateIDS(workingStateSpace.getChildren().get("cleanChild"));
-            //If The Child Is the Goal State, Return
-            if(childStateSpace != null){
-                if(childStateSpace.getDirtyRoomCount() == 0){
-                    return childStateSpace;
-                }
-            }
-        }
-         //If Node has a Right Child, Run the Algorithm on our up child.
-        if(workingStateSpace.getChildren().get("rightChild") != null ){
-            //Return What the Child Node Gives
-            StateSpace childStateSpace = IterateIDS(workingStateSpace.getChildren().get("rightChild"));
-            //If The Child Is the Goal State, Return
-            if(childStateSpace != null){
-                if(childStateSpace.getDirtyRoomCount() == 0){
-                    return childStateSpace;
-                }
-            }
-        }
-         //If Node has a Down Child, Run the Algorithm on our up child.
-        if(workingStateSpace.getChildren().get("downChild") != null ){
-            //Return What the Child Node Gives
-            StateSpace childStateSpace = IterateIDS(workingStateSpace.getChildren().get("downChild"));
-            //If The Child Is the Goal State, Return
-            if(childStateSpace != null){
-                if(childStateSpace.getDirtyRoomCount() == 0){
-                    return childStateSpace;
-                }
-            }
-        }        
-
-        //All Nodes Discovered/Null, Return.
-        System.out.println("ALL NODES DISCOVERED, Backing Up~");
-        return null;
+  
+        return workingStateSpace;
         
         
         

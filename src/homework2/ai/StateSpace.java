@@ -67,7 +67,7 @@ public class StateSpace {
     }
     //Prints out the Current Room that our State has the Vacuum in.
     public void printCurrentRoomLocation(){
-        System.out.println("**********CURRENT ROOM is in: " + this.currentRoom.getPositionRow()+ "," + this.currentRoom.getPositionColumn());
+        System.out.println("**********CURRENT ROOM IS: " + this.currentRoom.getPositionRow()+ "," + this.currentRoom.getPositionColumn() + "**********");
     }
     //Sets the RoomsArray
     public void setRoomsArray(Room[][] rooms){this.roomsArray = rooms;}
@@ -149,7 +149,7 @@ public class StateSpace {
     }
     
     //Calculates and Returns the Score
-    private double getScore(){
+    public double getScore(){
         double score = 0;
         for (int i = 0; i < this.actionList.size(); i++) {
             switch(this.actionList.get(i)){
@@ -194,7 +194,7 @@ public class StateSpace {
 
     public void generateChildren(){
         this.children.clear();
-        
+        System.out.println("Generating Children...");
         //If Dirty, Make a New Child State with Cleaned Room
         if(this.canClean() == true){           
             StateSpace childNode1 = this.cleanCurrentRoom();
@@ -257,32 +257,32 @@ public class StateSpace {
     public boolean canMoveLeft(){
         if(this.getCurrentRoom().getPositionColumn() != 0){
             if(this.roomsArray[this.getCurrentRoom().getPositionRow()][(this.getCurrentRoom().getPositionColumn()-1)].getVisited()== false){return true;}
-            else{System.out.println("Room was Already Visited Going Left");return false;}
+            else{System.out.println("Left Room was Already Visited");return false;}
         }
-        else{System.out.println("Hit a Wall Going Left!");return false;}
+        else{System.out.println("Hit the Left Wall!");return false;}
     }
     
     public boolean canMoveRight(){
         if(this.getCurrentRoom().getPositionColumn() != this.getColumns()-1){
             if(this.roomsArray[this.getCurrentRoom().getPositionRow()][(this.getCurrentRoom().getPositionColumn()+1)].getVisited()== false){return true;}
-            else{System.out.println("Room was Already Visited Going Right");return false;}
+            else{System.out.println("Right Room was Already Visited");return false;}
         }
-        else{System.out.println("Hit a Wall Going Right!");return false;}
+        else{System.out.println("Hit the Right Wall!");return false;}
     }
     
     public boolean canMoveUp(){
         if(this.getCurrentRoom().getPositionRow() != 0){
             if(this.roomsArray[this.getCurrentRoom().getPositionRow()-1][(this.getCurrentRoom().getPositionColumn())].getVisited()== false){return true;}
-            else{System.out.println("Room was Already Visited Going Up");return false;}
+            else{System.out.println("Up Room was Already Visited");return false;}
         }
-        else{System.out.println("Hit a Wall Going Up!");return false;}
+        else{System.out.println("Hit the Up Wall!");return false;}
     }
     public boolean canMoveDown(){
         if(this.getCurrentRoom().getPositionRow() != this.getRows()-1){
             if(this.roomsArray[this.getCurrentRoom().getPositionRow()+1][(this.getCurrentRoom().getPositionColumn())].getVisited()== false){return true;}
-            else{System.out.println("Room was Already Visited Going Down");return false;}
+            else{System.out.println("Down Room was Already Visited");return false;}
         }
-        else{System.out.println("Hit a Wall Going Down!");return false;}
+        else{System.out.println("Hit the Down Wall!");return false;}
     }
     
     
@@ -291,7 +291,6 @@ public class StateSpace {
         StateSpace childStateSpace = new StateSpace(this);
         switch(direction){
             case "left": if(this.canMoveLeft()){
-                            System.out.println("Moving Left!");
                             //If Can Move, Remove Vacuum from the Room
                             childStateSpace.getCurrentRoom().setHasVacuum(false);
                             //Place Vacuum in next Room
@@ -305,7 +304,6 @@ public class StateSpace {
                          } else{childStateSpace = null; return null; }
             
             case "right": if(this.canMoveRight()){
-                            System.out.println("Moving Right!");
                             //If Can Move, Remove Vacuum from the Room
                             childStateSpace.getCurrentRoom().setHasVacuum(false);
                             //Place Vacuum in next Room
@@ -319,7 +317,6 @@ public class StateSpace {
                          } else{childStateSpace = null; return null; }
             
             case "up": if(this.canMoveUp()){
-                            System.out.println("Moving Up!");
                             //If Can Move, Remove Vacuum from the Room
                             childStateSpace.getCurrentRoom().setHasVacuum(false);
                             //Place Vacuum in next Room
@@ -333,7 +330,6 @@ public class StateSpace {
                          } else{childStateSpace = null; return null; }
             
             case "down": if(this.canMoveDown()){ //Check if it'll be in bounds
-                            System.out.println("Moving Down!");
                             //If Can Move, Remove Vacuum from the Room
                             childStateSpace.getCurrentRoom().setHasVacuum(false);
                             //Place Vacuum in next Room
